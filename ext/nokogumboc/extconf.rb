@@ -19,6 +19,17 @@ if have_library('xml2', 'xmlNewDoc')
 
     # if found, enable direct calls to Nokogiri (and libxml2)
     $CFLAGS += ' -DNGLIB' if find_header('nokogiri.h', nokogiri_ext)
+
+    # If libnokogiri is not on the build path, we need to add it.
+    unless have_library('nokogiri', 'Nokogiri_wrap_xml_document')
+      nokogiri_libfile = 'nokogiri.' + RbConfig::CONFIG['DLEXT']
+      if File.exist? File.join(nokogiri_ext, nokogiri_libfile)
+        $LDFLAGS += " -Wl,-rpath #{nokogiri_ext} -L#{nokogiri_ext} "
+        $LIBS += " -l:#{nokogiri_libfile} "
+      else
+        puts 'WARNING! Could not find Nokogiri_wrap_xml_document symbol; build might fail.'
+      end
+    end
   end
 end
 

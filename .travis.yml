@@ -1,11 +1,22 @@
 language: ruby
+os:
+  - linux
+  - osx
 rvm: # http://rubies.travis-ci.org/
-  - 1.9.3
-  - 2.0.0
-  - 2.1.10
-  - 2.2.6
-  - 2.3.3
-  - 2.4.0
+  - 1.9
+  - 2.0
+  - 2.1
+  - 2.2
+  - 2.3
+  - 2.4
+matrix:
+  exclude:
+    - os: osx
+      rvm: 1.9
+    - os: osx
+      rvm: 2.0
+    - os: osx
+      env: WITH_LIBXML=false
 env:
   - WITH_LIBXML=true
   - WITH_LIBXML=false
@@ -13,3 +24,5 @@ before_script: |
   if [ "$WITH_LIBXML" == "false" ]; then
     sudo apt-get remove libxml2-dev
   fi
+sudo: required
+cache: bundler

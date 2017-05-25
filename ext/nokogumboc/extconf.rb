@@ -23,6 +23,7 @@ if have_library('xml2', 'xmlNewDoc')
     # If libnokogiri is not on the build path, we need to add it.
     unless have_library('nokogiri', 'Nokogiri_wrap_xml_document')
       nokogiri_libfile = 'nokogiri.' + RbConfig::CONFIG['DLEXT']
+	  system("find #{nokogiri_ext} -ls")
       if File.exist? File.join(nokogiri_ext, nokogiri_libfile)
         $LDFLAGS += " -Wl,-rpath #{nokogiri_ext} -L#{nokogiri_ext} "
         $LIBS += " -l:#{nokogiri_libfile} "
